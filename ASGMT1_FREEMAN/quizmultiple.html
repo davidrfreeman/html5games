@@ -110,8 +110,8 @@ function setupgame() {
 		 elementinmotion.style.top = this.style.top;
 		 makingmove = false;
 		 if (this.id.substring(1)==elementinmotion.id.substring(1)) {
-			 elementinmotion.style.backgroundColor = "gold";
-			 this.style.backgroundColor = "gold";
+			 elementinmotion.style.backgroundColor = "#05A342";
+			 this.style.backgroundColor = "#05A342";
 			 document.f.out.value = "RIGHT";
 			 sc = 1+Number(document.f.score.value);
 			 document.f.score.value = String(sc);
@@ -124,7 +124,7 @@ function setupgame() {
 			 }
 		 else {
 			 document.f.out.value = "WRONG";
-			 elementinmotion.style.backgroundColor = "grey";
+			 elementinmotion.style.backgroundColor = "#FF0000";
 			 }
 	 }
 	 else {
@@ -140,7 +140,7 @@ function setupgame() {
 <body onLoad="init();">
 <h1>Vehicles by Make and Model </h1><br/>
 
-Click on country or capital and then click on corresponding capital or country.
+Click on vehicle make or model and then click on corresponding make or model.
 <p>
 Reload for new game.
 <form name="f" >
@@ -149,8 +149,8 @@ Score: <input name="score" type="text" value="0"/>
 </form>
 </p>
 
-
-<video id="vid" controls="controls"  preload="none">
+<!-- Currently does not work in Chrome -->
+<video id="vid" controls="controls"  preload="auto">
 <source src="shortfireworks.mp4" type='video/mp4;' codecs="avc1.42E01E, mp4a.40.2">
 <source src="shortfireworks.theora.ogv" type='video/ogg;' codecs="theora, vorbis">
 <source src="shortfireworks.webmvp8.webm" type="video/webm;" codec="vp8, vorbis">
