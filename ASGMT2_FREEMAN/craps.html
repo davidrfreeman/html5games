@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Craps game</title>
+		<link rel="stylesheet" href="./main.css">
 	</head>
 	<body>
 		<canvas id="canvas" width="400" height="300">
@@ -13,6 +14,11 @@
 			Point: <input name="pv" id="point-value" value=""/>
 			Outcome: <input name="outcome" value=""/>
 		</form>
+		<p>
+			Rules:<br>
+			On the first roll, if a player gets a 2, 3, or 12, they loose. If they get a 7, 11, or 14 they win. If neither situation happens the result is know as the player point and the player has too roll again. On subsequent rolls, if a player rolls a 7, they loose, if they roll the 'Player Point', they win. If neither happens the player continues to roll using the original player point until they win or loose.
+
+		</p>
 	</body>
 	<script src="./index.js"></script>
 </html>
