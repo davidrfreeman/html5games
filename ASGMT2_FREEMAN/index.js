@@ -20,7 +20,9 @@ function numGen() {
 	return Math.ceil(Math.random()*7)
 }
 function throwdice() {
+	// bank to keep track of player's winnings
 	bank = Number(form.bank.value);
+	//if statement taken from text book
 	if(bank < 5) {
 		alert("You have run out of money!");
 		return;
@@ -41,6 +43,7 @@ function throwdice() {
 	}
 	// reduce method takes the two values in array ch and returns the sum, I prefer es6 when a callback is needed
 sum = ch.reduce((a,b) => a + b);
+form.rollVal.value = String(sum);
 dx = dicex;
 dy = dicey;
 // calls drawface function with the first stored value in ch
@@ -61,8 +64,8 @@ if (firstturn) {
 			bank += 40;
 			form.bank.value = String(bank);
 			break;
-		case 2:
 		case 3:
+		case 4:
 		case 12:
 		case 21:
 			form.outcome.value="You lose!";
@@ -87,7 +90,9 @@ else {
 		 form.pv.value="";
 		 firstturn = true;
 		 break;
+  case 2:
 	case 7:
+	case 21:
 		 form.outcome.value="You lose!";
 		 form.stage.value="Back to first throw.";
 		 form.pv.value="";

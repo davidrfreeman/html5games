@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Craps game</title>
+		<title>Dice Game</title>
 		<link rel="stylesheet" href="./main.css">
 	</head>
 	<body>
@@ -11,13 +11,14 @@
 		<button id="game-button">Throw dice </button>
 		<form name="f" id="f">
 			Stage: <input name="stage" value="First Throw"/>
+			Roll Value: <input name="rollVal" value="">
 			Point: <input name="pv" id="point-value" value=""/>
 			Outcome: <input name="outcome" value=""/>
 			Bank:	<input name="bank" value="100">
 		</form>
 		<p>
 			Rules:<br>
-			On the first roll, if a player gets a 2, 3, or 12, they loose. If they get a 7, 11, or 14 they win. If neither situation happens the result is know as the player point and the player has too roll again. On subsequent rolls, if a player rolls a 7, they loose, if they roll the 'Player Point', they win. If neither happens the player continues to roll using the original player point until they win or loose.
+			On the first roll, if the sum of a player's roll is a 3, 4, 12, or 21, they loose. If they get a 7, 11, 14, or 17 they win. If neither situation happens the result is know as the player point and the player has too roll again. On subsequent rolls, if a player rolls a 2, 7, or, 21 they loose, if they roll the 'Player Point', they win. If neither happens the player continues to roll using the original player point until they win or loose. With each new game a player's bank is reduced by 10, and then each roll within a game the bank is reduced by 5. If a player wins their bank is increased by 40.
 
 		</p>
 	</body>
