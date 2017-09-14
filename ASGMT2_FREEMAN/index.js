@@ -24,7 +24,7 @@ function throwdice() {
 	bank = Number(form.bank.value);
 	//if statement taken from text book
 	if(bank < 5) {
-		alert("You have run out of money!");
+		alert("You have run out of points!");
 		return;
 	} else if(bank > 5 && firstturn) {
 		bank -= 10;
