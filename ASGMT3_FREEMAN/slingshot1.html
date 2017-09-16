@@ -1,19 +1,23 @@
 <html>
 <head>
     <title>Slingshot pulling back</title>
-
+    <style media="screen">
+      p {
+        text-align: center;
+      }
+    </style>
     <script type="text/javascript">
-	var cwidth = 1200;
-	var cheight = 600;
+	var cwidth = 1500;
+	var cheight = 800;
 	var ctx;
 	var canvas1;
 	var everything = [];
 	var tid;
-	var startrockx = 100;
-	var startrocky = 240;
+	var startrockx = 150;
+	var startrocky = 430;
 	var ballx = startrockx;
 	var bally = startrocky;
-	var ballrad = 10;
+	var ballrad = 12;
 	var ballradsq = ballrad*ballrad;
 	var inmotion = false;
 	var horvelocity;
@@ -63,8 +67,8 @@ function movesling(dx,dy) {
 	this.s3y +=dy;
 }
 
-var mysling= new Sling(startrockx,startrocky,startrockx+80,startrocky-10,startrockx+80,
-					   startrocky+10,startrockx+70,startrocky+180,"rgb(120,20,10)");
+var mysling= new Sling(startrockx,startrocky,startrockx+0,startrocky-10,startrockx+70,
+					   startrocky+10,startrockx+70,startrocky+200,"rgb(120,20,10)");
 
 
 function Ball(sx,sy,rad,stylestring) {
@@ -89,7 +93,7 @@ function moveball(dx,dy) {
 	this.sy +=dy;
 }
 
-var cball = new Ball(startrockx,startrocky,ballrad,"rgb(250,0,0)");
+var cball = new Ball(startrockx,startrocky,ballrad,"rgb(150,100,120)");
 
 
 function myrectangle(sx,sy,swidth,sheight,stylestring) {
@@ -125,8 +129,9 @@ function drawAnImage() {
 	ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
 
 }
-var target = new Picture(700,210,209,179,chicken);
-var ground = new myrectangle(0,370,1200,30,"rgb(10,250,0)");
+var target = new Picture(700,430,209,179,chicken);
+var ground = new myrectangle(0,600,1500,30,"#387C31");
+var obstacle = new myrectangle(450,500,25,100,"rgb(255,0,0)");
 
 everything.push(target);
 everything.push(ground);
@@ -134,11 +139,13 @@ everything.push(ground);
 everything.push(mysling);
 everything.push(cball);
 
+everything.push(obstacle);
+
 
 //called onload. Sets up ctx context for drawing and canvas1 for events
 function init(){
    ctx = document.getElementById('canvas').getContext('2d');
-    canvas1 = document.getElementById('canvas');
+   canvas1 = document.getElementById('canvas');
    canvas1.addEventListener('mousedown',findball,false);
    canvas1.addEventListener('mousemove',moveit,false);
    canvas1.addEventListener('mouseup',finish,false);
@@ -174,10 +181,10 @@ function moveit(ev) {
 	var my;
 	if (inmotion) {
 
-	if ( ev.layerX ||  ev.layerX == 0) { // Firefox
+	if ( ev.layerX ||  ev.layerY == 0) { // Firefox
    			mx= ev.layerX;
     		my = ev.layerY;
-  		} else if (ev.offsetX || ev.offsetX == 0) { // Opera
+  		} else if (ev.offsetX || ev.offsetY == 0) { // Opera
     		mx = ev.offsetX;
     		my = ev.offsetY;
   		}
@@ -203,7 +210,7 @@ function finish(ev) {
   horvelocity =  outofcannon*Math.cos(angleradians);
   verticalvel1 = - outofcannon*Math.sin(angleradians);
 	drawall();
-	tid = setInterval(change,100);
+	tid = setInterval(change,65);
 	}
 }
 
@@ -227,27 +234,32 @@ function change() {
 	var bx = cball.sx;
 	var by = cball.sy;
 	//check for inside of target
-// adjust boundaries by 40 to make the hit area smaller
-	if ((bx>=target.sx+40)&&(bx<=(target.sx+target.swidth-40))&&
-	(by>=target.sy+40)&&(by<=(target.sy+target.sheight-40))) {
+// adjust boundaries by 10 to make the hit area smaller
+	if ((bx>=target.sx+10)&&(bx<=(target.sx+target.swidth-10))&&
+	(by>=target.sy+10)&&(by<=(target.sy+target.sheight-10))) {
 		//clearInterval(tid);
 //change image to the feathers image
 		target.img = feathers;
+    obstacle.sheight += 10;
+    obstacle.sy -= 10;
 	}
 	//check for getting beyond ground level
 	if (by>=ground.sy) {
 		clearInterval(tid);
 	}
+  if (bx >= obstacle.sx && bx <= (obstacle.sx + obstacle.swidth) && by >= obstacle.sy) {
+    clearInterval(tid);
+  }
 	drawall();
 }
 
 </script>
 </head>
 <body onLoad="init();">
-<canvas id="canvas" width="1200" height="600">
+<canvas id="canvas" width="1500" height="800">
 Your browser doesn't support the HTML5 element canvas.
 </canvas>
 <br/>
-Mouse down and drag ball. Releasing the mouse button will shoot the slingshot.  Slingshot remains at the last position. Reload page to try again.
+<p>Mouse down and drag ball. Releasing the mouse button will shoot the slingshot.  Slingshot remains at the last position. Reload page to try again.</p>
 </body>
 </html>
