@@ -2,31 +2,45 @@
 <head>
     <title>Slingshot pulling back</title>
     <style media="screen">
+      #counter {
+        border: solid black 2px;
+        padding: 5px;
+        margin: 5px 150px 0 0;
+        float: right;
+        clear: right;
+      }
+      #scoreboard {
+        margin-right: 150px;
+        float: right;
+      }
       p {
         text-align: center;
       }
     </style>
     <script type="text/javascript">
-	var cwidth = 1500;
-	var cheight = 800;
-	var ctx;
-	var canvas1;
-	var everything = [];
-	var tid;
-	var startrockx = 150;
-	var startrocky = 430;
-	var ballx = startrockx;
-	var bally = startrocky;
-	var ballrad = 12;
-	var ballradsq = ballrad*ballrad;
-	var inmotion = false;
-	var horvelocity;
-	var verticalvel1;
-	var verticalvel2;
-	var gravity = 2;  //arbitrary value. It produces nice arcs.
-	var chicken = new Image();
+	let cwidth = 1500;
+	let cheight = 800;
+	let ctx;
+	let canvas1;
+	let everything = [];
+	let tid;
+	let startrockx = 150;
+	let startrocky = 430;
+	let ballx = startrockx;
+	let bally = startrocky;
+	let ballrad = 12;
+	let ballradsq = ballrad*ballrad;
+	let inmotion = false;
+	let horvelocity;
+	let verticalvel1;
+	let verticalvel2;
+	let gravity = 2;  //arbitrary value. It produces nice arcs.
+  let counter;
+  let counterVal;
+  let output;
+	let chicken = new Image();
 	chicken.src = "chicken.jpg";
-	var feathers = new Image();
+	let feathers = new Image();
 	feathers.src = "feathers.gif";
 //Create 'objects', each with a draw method for placement on the canvas
 function Sling(bx,by,s1x,s1y,s2x,s2y,s3x,s3y,stylestring) {
@@ -67,7 +81,7 @@ function movesling(dx,dy) {
 	this.s3y +=dy;
 }
 
-var mysling= new Sling(startrockx,startrocky,startrockx+0,startrocky-10,startrockx+70,
+let mysling= new Sling(startrockx,startrocky,startrockx+0,startrocky-10,startrockx+70,
 					   startrocky+10,startrockx+70,startrocky+200,"rgb(120,20,10)");
 
 
@@ -93,7 +107,7 @@ function moveball(dx,dy) {
 	this.sy +=dy;
 }
 
-var cball = new Ball(startrockx,startrocky,ballrad,"rgb(150,100,120)");
+let cball = new Ball(startrockx,startrocky,ballrad,"rgb(150,100,120)");
 
 
 function myrectangle(sx,sy,swidth,sheight,stylestring) {
@@ -129,9 +143,9 @@ function drawAnImage() {
 	ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
 
 }
-var target = new Picture(700,430,209,179,chicken);
-var ground = new myrectangle(0,600,1500,30,"#387C31");
-var obstacle = new myrectangle(450,500,25,100,"rgb(255,0,0)");
+let target = new Picture(700,430,209,179,chicken);
+let ground = new myrectangle(0,600,1500,30,"#387C31");
+let obstacle = new myrectangle(450,475,25,125,"rgb(255,0,0)");
 
 everything.push(target);
 everything.push(ground);
@@ -143,23 +157,26 @@ everything.push(obstacle);
 
 
 //called onload. Sets up ctx context for drawing and canvas1 for events
-function init(){
+window.onload = function init(){
+   output = document.getElementById('output');
+   counter = document.getElementById('counter');
+   counterVal = 0;
    ctx = document.getElementById('canvas').getContext('2d');
    canvas1 = document.getElementById('canvas');
    canvas1.addEventListener('mousedown',findball,false);
    canvas1.addEventListener('mousemove',moveit,false);
    canvas1.addEventListener('mouseup',finish,false);
  //initial drawing
-  drawall();
+  drawall(everything);
 }
 function findball(ev) {
-	var mx;
-	var my;
-	if ( ev.layerX ||  ev.layerX == 0) { // Firefox, Chrome
+	let mx;
+	let my;
+	if ( ev.layerX ||  ev.layerY == 0) { // Firefox, Chrome
 
    			mx= ev.layerX;
     		my = ev.layerY;
-  		} else if (ev.offsetX || ev.offsetX == 0) { // Opera,
+  		} else if (ev.offsetX || ev.offsetY == 0) { // Opera,
 
     		mx = ev.offsetX;
     		my = ev.offsetY;
@@ -168,7 +185,7 @@ function findball(ev) {
 
 	if (distsq(mx,my, cball.sx,cball.sy)<ballradsq) {
 	inmotion = true;
-		drawall();
+		drawall(everything);
 	}
 }
 //use square of distance to lesson computation
@@ -177,8 +194,8 @@ function distsq(x1,y1,x2,y2) {
 }
 //for dragging of ball and modification of mysling
 function moveit(ev) {
-	var mx;
-	var my;
+	let mx;
+	let my;
 	if (inmotion) {
 
 	if ( ev.layerX ||  ev.layerY == 0) { // Firefox
@@ -193,7 +210,7 @@ function moveit(ev) {
 	cball.sy = my;
 	mysling.bx = mx;
 	mysling.by = my;
-	drawall();
+	drawall(everything);
 	}
 }
 
@@ -204,58 +221,75 @@ function finish(ev) {
 		inmotion = false;
 //want initial velocity to increase with length, make it the square for convenience
 //the 700 is arbitrary. It makes a nice arc!
-	 var outofcannon = distsq(mysling.bx,mysling.by,mysling.s1x,mysling.s1y)/700;
+	 let outofcannon = distsq(mysling.bx,mysling.by,mysling.s1x,mysling.s1y)/550;
 //use angle based on line interval bx,by to s1x,s1y, the upper arm of sling
-  var angleradians = -Math.atan2(mysling.s1y-mysling.by,mysling.s1x-mysling.bx);
+  let angleradians = -Math.atan2(mysling.s1y-mysling.by,mysling.s1x-mysling.bx);
   horvelocity =  outofcannon*Math.cos(angleradians);
   verticalvel1 = - outofcannon*Math.sin(angleradians);
-	drawall();
-	tid = setInterval(change,65);
+	drawall(everything);
+	tid = setInterval(change,85);
 	}
 }
 
-function drawall() {
+function drawall(everything) {
 //drawall erases the whole canvas and then draws everything in everything array
 	ctx.clearRect(0,0,cwidth,cheight);
-	var i;
-	for (i=0;i<everything.length;i++) {
-		everything[i].draw();
-	}
+  let len = everything.length;
+  everything.map((i)=> {
+    return i.draw();
+  })
 }
 
 function change() {
 //this creates the motion of the ball from the slingshot to either the target or the ground
-	var dx = horvelocity;
+	let dx = horvelocity;
 	verticalvel2 = verticalvel1 + gravity;
-	var dy = (verticalvel1 + verticalvel2)*.5;
+	let dy = (verticalvel1 + verticalvel2)*.5;
 	verticalvel1 = verticalvel2;
 	cball.moveit(dx,dy);
 	//check for hitting target
-	var bx = cball.sx;
-	var by = cball.sy;
+	let bx = cball.sx;
+	let by = cball.sy;
 	//check for inside of target
 // adjust boundaries by 10 to make the hit area smaller
 	if ((bx>=target.sx+10)&&(bx<=(target.sx+target.swidth-10))&&
 	(by>=target.sy+10)&&(by<=(target.sy+target.sheight-10))) {
-		//clearInterval(tid);
+		clearInterval(tid);
 //change image to the feathers image
 		target.img = feathers;
     obstacle.sheight += 10;
     obstacle.sy -= 10;
+    counterVal++;
+    counter.innerText = String(counterVal);
+    output.innerText = "HIT!!!"
+    setTimeout(function() {
+      target.img = chicken;
+    },1500);
 	}
 	//check for getting beyond ground level
 	if (by>=ground.sy) {
 		clearInterval(tid);
+    output.innerText = "You Missed"
 	}
-  if (bx >= obstacle.sx && bx <= (obstacle.sx + obstacle.swidth) && by >= obstacle.sy) {
+  if (bx >= obstacle.sx - ballrad && bx <= obstacle.sx + obstacle.swidth + ballrad && by >= obstacle.sy - ballrad) {
     clearInterval(tid);
+    obstacle.sheight -= 10;
+    obstacle.sy += 10;
+    output.innerText = "You hit the obstacle"
   }
-	drawall();
+	drawall(everything);
+  // draw(everything[2].draw());
+  // draw(everything[3].draw());
 }
 
 </script>
 </head>
-<body onLoad="init();">
+<body>
+<div>
+  <span id="output"></span>
+  <span id="scoreboard">Hits</span>
+  <div id="counter">0</div>
+</div>
 <canvas id="canvas" width="1500" height="800">
 Your browser doesn't support the HTML5 element canvas.
 </canvas>
