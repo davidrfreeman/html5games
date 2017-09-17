@@ -2,6 +2,9 @@
 <head>
     <title>Slingshot pulling back</title>
     <style media="screen">
+    body {
+      background-color: #F5F5F5;
+    }
       #counter {
         border: solid black 2px;
         padding: 5px;
@@ -34,7 +37,7 @@
 	let horvelocity;
 	let verticalvel1;
 	let verticalvel2;
-	let gravity = 2;  //arbitrary value. It produces nice arcs.
+	let gravity = 1.8;
   let counter;
   let counterVal;
   let output;
@@ -221,13 +224,13 @@ function finish(ev) {
 		inmotion = false;
 //want initial velocity to increase with length, make it the square for convenience
 //the 700 is arbitrary. It makes a nice arc!
-	 let outofcannon = distsq(mysling.bx,mysling.by,mysling.s1x,mysling.s1y)/550;
+	 let outofcannon = distsq(mysling.bx,mysling.by,mysling.s1x,mysling.s1y)/600;
 //use angle based on line interval bx,by to s1x,s1y, the upper arm of sling
   let angleradians = -Math.atan2(mysling.s1y-mysling.by,mysling.s1x-mysling.bx);
   horvelocity =  outofcannon*Math.cos(angleradians);
   verticalvel1 = - outofcannon*Math.sin(angleradians);
 	drawall(everything);
-	tid = setInterval(change,85);
+	tid = setInterval(change,90);
 	}
 }
 
