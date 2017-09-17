@@ -8,27 +8,28 @@
       #counter {
         border: solid black 2px;
         padding: 5px;
-        margin: 5px 150px 0 0;
-        float: right;
-        clear: right;
+        margin-left: 25px;
+        float: left;
+        clear: left;
       }
       #scoreboard {
-        margin-right: 150px;
-        float: right;
+        margin-left: 25px;
+        float: left;
       }
+
       p {
-        text-align: center;
+        text-align: left;
       }
     </style>
     <script type="text/javascript">
-	let cwidth = 1500;
-	let cheight = 800;
+	let cwidth = 1200;
+	let cheight = 600;
 	let ctx;
 	let canvas1;
 	let everything = [];
 	let tid;
 	let startrockx = 150;
-	let startrocky = 430;
+	let startrocky = 250;
 	let ballx = startrockx;
 	let bally = startrocky;
 	let ballrad = 12;
@@ -37,7 +38,7 @@
 	let horvelocity;
 	let verticalvel1;
 	let verticalvel2;
-	let gravity = 1.8;
+	let gravity = 2.8;
   let counter;
   let counterVal;
   let output;
@@ -84,8 +85,8 @@ function movesling(dx,dy) {
 	this.s3y +=dy;
 }
 
-let mysling= new Sling(startrockx,startrocky,startrockx+0,startrocky-10,startrockx+70,
-					   startrocky+10,startrockx+70,startrocky+200,"rgb(120,20,10)");
+let mysling= new Sling(startrockx,startrocky,startrockx+80,startrocky-10,startrockx+80,
+					   startrocky+10,startrockx+70,startrocky+120,"rgb(120,20,10)");
 
 
 function Ball(sx,sy,rad,stylestring) {
@@ -146,9 +147,9 @@ function drawAnImage() {
 	ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
 
 }
-let target = new Picture(700,430,209,179,chicken);
-let ground = new myrectangle(0,600,1500,30,"#387C31");
-let obstacle = new myrectangle(450,475,25,125,"rgb(255,0,0)");
+let target = new Picture(700,210,209,179,chicken);
+let ground = new myrectangle(0,370,1200,30,"#387C31");
+let obstacle = new myrectangle(450,245,25,125,"rgb(255,0,0)");
 
 everything.push(target);
 everything.push(ground);
@@ -289,11 +290,11 @@ function change() {
 </head>
 <body>
 <div>
-  <span id="output"></span>
+  <span id="output"></span><br>
   <span id="scoreboard">Hits</span>
   <div id="counter">0</div>
 </div>
-<canvas id="canvas" width="1500" height="800">
+<canvas id="canvas" width="1200" height="600">
 Your browser doesn't support the HTML5 element canvas.
 </canvas>
 <br/>
