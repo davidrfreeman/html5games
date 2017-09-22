@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Memory game using polygons</title>
+    <title>Memory game using pictures</title>
     <style>
 	form {
 	width:330px;
@@ -17,32 +17,39 @@
 	var cheight = 400;
 	var ctx;
 	var firstpick = true;
-	var firstcard;
+	var firstcard = -1;
 	var secondcard;
 	var backcolor = "rgb(128,0,128)";
-	var frontbgcolor = "rgb(251,215,73)";
-	var polycolor = "rgb(254,11,0)";
 	var tablecolor = "rgb(255,255,255)";
-	var cardrad = 30;
 	var deck = [];
 	var firstsx = 30;
 	var firstsy = 50;
 	var margin = 30;
-	var cardwidth = 4*cardrad;
-	var cardheight = 4*cardrad;
+	var cardwidth = 100;
+	var cardheight = 100;
 	var tid;
 	var matched;
 	var starttime;
+	var count = 0;
+	var pairs = [
+		["allison1.jpg","allison2.jpg"],
+	   [ "grant1.jpg","grant2.jpg"],
+	  ["liam1.jpg","liam2.jpg"],
+	   ["aviva1.jpg","aviva2.jpg"],	   
+	   ["daniel1.jpg","daniel2.jpg"]	   
+	]
+	
+//deck holds info on the cards: the location and dimensions, the src for the picture
+// and identifying info
+//the info is set using the array of arrays in the makedeck function
 
-//deck holds info on the cards: the location and dimensions and identifying info
-//identifying (matching) info in this case is the number of sides for the poly
-
-function Card(sx,sy,swidth,sheight,info) {
+function Card(sx,sy,swidth,sheight, img, info) {
 	this.sx = sx;
 	this.sy = sy;
 	this.swidth = swidth;
 	this.sheight = sheight;
 	this.info = info;
+	this.img = img;
 	this.draw = drawback;
 }
 
@@ -51,84 +58,56 @@ function makedeck() {
 	var i;
 	var acard;
 	var bcard;
+	var pica;
+	var picb;
 	var cx = firstsx;
 	var cy = firstsy;
-	for(i=3;i<9;i++) {
-		acard = new Card(cx,cy,cardwidth,cardheight,i);
+	for(i=0;i<pairs.length;i++) {
+		pica = new Image();
+		pica.src = pairs[i][0];
+		acard = new Card(cx,cy,cardwidth,cardheight,pica,i);
 		deck.push(acard);
-		bcard = new Card(cx,cy+cardheight+margin,cardwidth,cardheight,i);
+		picb = new Image();
+		picb.src = pairs[i][1];		
+		bcard = new Card(cx,cy+cardheight+margin,cardwidth,cardheight,picb,i);
 		deck.push(bcard);
 		cx = cx+cardwidth+ margin;
 		acard.draw();
 		bcard.draw();
 	}
-	shuffle();
+	
 }
 
 function shuffle() {
 //coded to resemble how I shuffled cards when playing concentration
+//swaps the changing information: the imgand the info indicating the matching
 var i;
 var k;
-var holder;
+var holderinfo;
+var holderimg;
 var dl = deck.length
 var nt;
 	for (nt=0;nt<3*dl;nt++) {  //do the swap 3 times deck.length times
 	  i = Math.floor(Math.random()*dl);
 	  k = Math.floor(Math.random()*dl);
-	  holder = deck[i].info;
+	  holderinfo = deck[i].info;
+	  holderimg = deck[i].img;
 	  deck[i].info = deck[k].info;
-	  deck[k].info = holder;
+	  deck[i].img = deck[k].img;
+	  deck[k].info = holderinfo;
+	  deck[k].img = holderimg;
 	}
 }
-
-//Polycard will produce the card face. Backcard will produce the common back
-
-function Polycard(sx,sy,rad,n) {
-  this.sx = sx;
-  this.sy = sy;
-  this.rad = rad;
-  this.draw = drawpoly;
-  this.n = n;
-  this.angle = (2*Math.PI)/n  //parens may not be needed.
-  this.moveit = generalmove;
-
-}
-
-function drawpoly() {
-	ctx.fillStyle= frontbgcolor;
-	ctx.strokeStyle=backcolor;
-	ctx.fillRect(this.sx-2*this.rad,this.sy-2*this.rad,4*this.rad,4*this.rad);
-	ctx.beginPath();
-	ctx.fillStyle=polycolor;
-	var i;
-	var rad = this.rad;
-	ctx.beginPath();
-	ctx.moveTo(this.sx+rad*Math.cos(-.5*this.angle),this.sy+rad*Math.sin(-.5*this.angle));
-	for (i=1;i<this.n;i++) {
-	  ctx.lineTo(this.sx+rad*Math.cos((i-.5)*this.angle),this.sy+rad*Math.sin((i-.5)*this.angle));
-	}
-	ctx.fill();
-}
-
-function generalmove(dx,dy) {
-	this.sx +=dx;
-	this.sy +=dy;
-}
-
-
-
-
 
 
 function drawback() {
 	ctx.fillStyle = backcolor;
-	ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);
+	ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);	
 }
 
 
-
-
 function choose(ev) {
+	var out;
 	var mx;
 	var my;
 	var pick1;
@@ -146,34 +125,39 @@ function choose(ev) {
 		if (card.sx >=0)  //this is the way to avoid checking for clicking on this space
 		if ((mx>card.sx)&&(mx<card.sx+card.swidth)&&(my>card.sy)&&(my<card.sy+card.sheight)) {
 			//check that this isn't clicking on first card
-			if ((firstpick)|| (i!=firstcard)) break;
+			if ((firstpick)|| (i!=firstcard)) {
+				break;}
 		}
 	}
 	if (i<deck.length) {  //clicked on a card
 		if (firstpick) {
 			firstcard = i;
 			firstpick = false;
-			// create poly to draw it on top of back
-			pick1 = new Polycard(card.sx+cardwidth*.5,card.sy+cardheight*.5,cardrad,card.info);
-			pick1.draw();
+			ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight); 
 		}
 		else {
 			secondcard = i;
-			pick2 = new Polycard(card.sx+cardwidth*.5,card.sy+cardheight*.5,cardrad,card.info);
-			pick2.draw();
-		  	if (deck[i].info==deck[firstcard].info) {
+			ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight); 
+		  	if (card.info==deck[firstcard].info) {
 				matched = true;
-
-				var nm = 1+Number(document.f.count.value);
-				document.f.count.value = String(nm);
-				if (nm>= .5*deck.length) {
+				count++;
+				ctx.fillStyle= tablecolor;
+				ctx.fillRect(10,340,900,100);
+				ctx.fillStyle=backcolor;
+				ctx.fillText("Number of matches so far: "+String(count),10,360);
+				if (count>= .5*deck.length) {
 					var now = new Date();
 					var nt = Number(now.getTime());
-
-					var seconds = Math.floor(.5+(nt-starttime)/1000);
-					document.f.elapsed.value = String(seconds);
-					//need to fo to flipback for the last match
+					var seconds = Math.floor(.5+(nt-starttime)/1000); 
+					ctx.fillStyle= tablecolor;
+					ctx.fillRect(0,0,900,400);
+					ctx.fillStyle=backcolor;
+					out = "You finished in "+String(seconds)+ " secs.";
+					ctx.fillText(out,10,100);
+					ctx.fillText("Reload the page to try again.",10,300);
+					return;
 				}
+				
 			}
 			else {
 				matched = false;
@@ -200,16 +184,17 @@ function flipback() {
 }
 
 function init(){
-   ctx = document.getElementById('canvas').getContext('2d');
+   ctx = document.getElementById('canvas').getContext('2d'); 
    canvas1 = document.getElementById('canvas');
    canvas1.addEventListener('click',choose,false);
    makedeck();
-   document.f.count.value = "0";
-   document.f.elapsed.value = "";
+   shuffle();
+   ctx.font="bold 20pt sans-serif";
+   ctx.fillText("Click on two cards to make a match.",10,20);
+   ctx.fillText("Number of matches so far: 0",10,360);
    starttime = new Date();
    starttime = Number(starttime.getTime());
-   shuffle();
-}
+  } 
 
 
 
@@ -217,17 +202,12 @@ function init(){
 
 </script>
 </head>
-<body onLoad="init();">
+<body onLoad="init();">  
 <canvas id="canvas" width="900" height="400">
 Your browser doesn't support the HTML5 element canvas.
-</canvas>
+</canvas>  
 <br/>
-Click on two cards to see if you have a match.
-<form name="f">
-Number of matches:  <input type="text" name="count" value="0" size="1"/>
-<p>
-Time taken to complete puzzle: <input type="text" name="elapsed" value="  " size="4"/> seconds.
-</p>
-</form>
+
+
 </body>
 </html>

@@ -1,25 +1,13 @@
 <html>
 <head>
-    <title>Slingshot pulling back</title>
+    <title>Cannonball Slingshot</title>
     <style media="screen">
     body {
-      background-color: #F5F5F5;
+      background-color: rgba(118, 156, 191, 0.41);
     }
-      #counter {
-        border: solid black 2px;
-        padding: 5px;
-        margin-left: 25px;
-        float: left;
-        clear: left;
-      }
-      #scoreboard {
-        margin-left: 25px;
-        float: left;
-      }
-
-      p {
-        text-align: left;
-      }
+    p {
+      width: 800PX;
+    }
     </style>
     <script type="text/javascript">
 	let cwidth = 1200;
@@ -42,10 +30,10 @@
   let counter;
   let counterVal;
   let output;
-	let chicken = new Image();
-	chicken.src = "chicken.jpg";
-	let feathers = new Image();
-	feathers.src = "feathers.gif";
+  let cabin = new Image();
+  cabin.src = "cabin-no-background.jpg";
+  let explosion = new Image();
+  explosion.src = "Explosion 2.jpg";
 //Create 'objects', each with a draw method for placement on the canvas
 function Sling(bx,by,s1x,s1y,s2x,s2y,s3x,s3y,stylestring) {
 	this.bx = bx;
@@ -147,7 +135,7 @@ function drawAnImage() {
 	ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
 
 }
-let target = new Picture(700,210,209,179,chicken);
+let target = new Picture(700,210,209,179,cabin);
 let ground = new myrectangle(0,370,1200,30,"#387C31");
 let obstacle = new myrectangle(450,245,25,125,"rgb(255,0,0)");
 
@@ -224,7 +212,6 @@ function finish(ev) {
 	if (inmotion) {
 		inmotion = false;
 //want initial velocity to increase with length, make it the square for convenience
-//the 700 is arbitrary. It makes a nice arc!
 	 let outofcannon = distsq(mysling.bx,mysling.by,mysling.s1x,mysling.s1y)/750;
 //use angle based on line interval bx,by to s1x,s1y, the upper arm of sling
   let angleradians = -Math.atan2(mysling.s1y-mysling.by,mysling.s1x-mysling.bx);
@@ -235,11 +222,11 @@ function finish(ev) {
 	}
 }
 
-function drawall(everything) {
+function drawall(arr) {
 //drawall erases the whole canvas and then draws everything in everything array
 	ctx.clearRect(0,0,cwidth,cheight);
-  let len = everything.length;
-  everything.map((i)=> {
+  let len = arr.length;
+  arr.map((i)=> {
     return i.draw();
   })
 }
@@ -260,14 +247,14 @@ function change() {
 	(by>=target.sy+10)&&(by<=(target.sy+target.sheight-10))) {
 		clearInterval(tid);
 //change image to the feathers image
-		target.img = feathers;
+		target.img = explosion;
     obstacle.sheight += 10;
     obstacle.sy -= 10;
     counterVal++;
     counter.innerText = String(counterVal);
     output.innerText = "HIT!!!"
     setTimeout(function() {
-      target.img = chicken;
+      target.img = cabin;
     },1500);
 	}
 	//check for getting beyond ground level
@@ -298,6 +285,6 @@ function change() {
 Your browser doesn't support the HTML5 element canvas.
 </canvas>
 <br/>
-<p>Mouse down and drag ball. Releasing the mouse button will shoot the slingshot.  Slingshot remains at the last position. Reload page to try again.</p>
+<p>Mouse down and drag ball. Releasing the mouse button will shoot the slingshot.  Slingshot remains at the last position. If the target is struck the obstacle will grow and the Hit counter will increment by 1, if the obstacle is hit it will shrink, if the shot is a miss the cannonball can be clicked and fired again. If the cannonball goes off the screen the page will need to be reloaded.</p>
 </body>
 </html>

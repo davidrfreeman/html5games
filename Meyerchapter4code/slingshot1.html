@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Slingshot pulling back</title>
-   
+
     <script type="text/javascript">
 	var cwidth = 1200;
 	var cheight = 600;
@@ -21,10 +21,10 @@
 	var verticalvel2;
 	var gravity = 2;  //arbitrary value. It produces nice arcs.
 	var chicken = new Image();
-	chicken.src = "chicken.gif";
+	chicken.src = "chicken.jpg";
 	var feathers = new Image();
 	feathers.src = "feathers.gif";
-//Create 'objects', each with a draw method for placement on the canvas	
+//Create 'objects', each with a draw method for placement on the canvas
 function Sling(bx,by,s1x,s1y,s2x,s2y,s3x,s3y,stylestring) {
 	this.bx = bx;
 	this.by = by;
@@ -36,7 +36,7 @@ function Sling(bx,by,s1x,s1y,s2x,s2y,s3x,s3y,stylestring) {
 	this.s3y = s3y;
 	this.strokeStyle = stylestring;
 	this.draw = drawsling;
-	this.moveit = movesling;	
+	this.moveit = movesling;
 }
 
 function drawsling() {
@@ -65,8 +65,8 @@ function movesling(dx,dy) {
 
 var mysling= new Sling(startrockx,startrocky,startrockx+80,startrocky-10,startrockx+80,
 					   startrocky+10,startrockx+70,startrocky+180,"rgb(120,20,10)");
- 
-	
+
+
 function Ball(sx,sy,rad,stylestring) {
   this.sx = sx;
   this.sy = sy;
@@ -81,7 +81,7 @@ function drawball() {
 	ctx.beginPath();
 	//ctx.fillStyle= rgb(0,0,0);
 	ctx.arc(this.sx,this.sy,this.rad,0,Math.PI*2,true);
-	ctx.fill();	
+	ctx.fill();
 }
 
 function moveball(dx,dy) {
@@ -104,7 +104,7 @@ function myrectangle(sx,sy,swidth,sheight,stylestring) {
 
 function drawrects() {
 	ctx.fillStyle = this.fillstyle;
-	ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);	
+	ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);
 }
 
 function moverect(dx,dy) {
@@ -113,7 +113,7 @@ function moverect(dx,dy) {
 }
 
 function Picture (sx,sy,swidth,sheight,imga) {
-	
+
 	this.sx = sx;
 	this.sy = sy;
 	this.img = imga;
@@ -123,7 +123,7 @@ function Picture (sx,sy,swidth,sheight,imga) {
 }
 function drawAnImage() {
 	ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
-	
+
 }
 var target = new Picture(700,210,209,179,chicken);
 var ground = new myrectangle(0,370,1200,30,"rgb(10,250,0)");
@@ -142,23 +142,23 @@ function init(){
    canvas1.addEventListener('mousedown',findball,false);
    canvas1.addEventListener('mousemove',moveit,false);
    canvas1.addEventListener('mouseup',finish,false);
- //initial drawing 
-  drawall();  
-} 
+ //initial drawing
+  drawall();
+}
 function findball(ev) {
 	var mx;
 	var my;
 	if ( ev.layerX ||  ev.layerX == 0) { // Firefox, Chrome
-	
+
    			mx= ev.layerX;
     		my = ev.layerY;
   		} else if (ev.offsetX || ev.offsetX == 0) { // Opera,
-		
+
     		mx = ev.offsetX;
     		my = ev.offsetY;
   		}
-		
-	
+
+
 	if (distsq(mx,my, cball.sx,cball.sy)<ballradsq) {
 	inmotion = true;
 		drawall();
@@ -173,7 +173,7 @@ function moveit(ev) {
 	var mx;
 	var my;
 	if (inmotion) {
-		
+
 	if ( ev.layerX ||  ev.layerX == 0) { // Firefox
    			mx= ev.layerX;
     		my = ev.layerY;
@@ -181,7 +181,7 @@ function moveit(ev) {
     		mx = ev.offsetX;
     		my = ev.offsetY;
   		}
-	
+
 	cball.sx = mx;
 	cball.sy = my;
 	mysling.bx = mx;
@@ -238,15 +238,15 @@ function change() {
 	if (by>=ground.sy) {
 		clearInterval(tid);
 	}
-	drawall();	
+	drawall();
 }
 
 </script>
 </head>
-<body onLoad="init();">  
+<body onLoad="init();">
 <canvas id="canvas" width="1200" height="600">
 Your browser doesn't support the HTML5 element canvas.
-</canvas>  
+</canvas>
 <br/>
 Mouse down and drag ball. Releasing the mouse button will shoot the slingshot.  Slingshot remains at the last position. Reload page to try again.
 </body>
