@@ -13,18 +13,18 @@
 	}
 	</style>
     <script type="text/javascript">
-	var cwidth = 900;
+	var cwidth = 1200;
 	var cheight = 400;
 	var ctx;
 	var firstpick = true;
 	var firstcard = -1;
 	var secondcard;
-	var backcolor = "rgb(128,0,128)";
-	var tablecolor = "rgb(255,255,255)";
+	var backcolor = "rgb(35, 190, 130)";
+	var tablecolor = "rgb(247, 245, 245)";
 	var deck = [];
 	var firstsx = 30;
 	var firstsy = 50;
-	var margin = 30;
+	var margin = 10;
 	var cardwidth = 100;
 	var cardheight = 100;
 	var tid;
@@ -32,13 +32,18 @@
 	var starttime;
 	var count = 0;
 	var pairs = [
-		["allison1.jpg","allison2.jpg"],
-	   [ "grant1.jpg","grant2.jpg"],
-	  ["liam1.jpg","liam2.jpg"],
-	   ["aviva1.jpg","aviva2.jpg"],	   
-	   ["daniel1.jpg","daniel2.jpg"]	   
+	  ["Beach1.jpeg","Boat1.jpeg"],
+    ["campfire1.jpeg", "tent1.jpeg"],
+    ["cassettes.jpeg","record player1.jpeg"],
+    ["Chipping1.jpeg","Green1.jpeg"],
+    ["Earth1.jpeg","Moon1.jpg"],
+    ["Fields1.jpeg","Windmills1.jpeg"],
+    ["Library1.jpeg","Stacks of Books1.jpeg"],
+    ["Mountain Lake1.jpeg","Mountain Road1.jpeg"],
+    ["Puppy1.jpeg","Retriever1.jpg"],
+    ["street view1.jpeg","street corner1.jpeg"],
 	]
-	
+
 //deck holds info on the cards: the location and dimensions, the src for the picture
 // and identifying info
 //the info is set using the array of arrays in the makedeck function
@@ -53,7 +58,7 @@ function Card(sx,sy,swidth,sheight, img, info) {
 	this.draw = drawback;
 }
 
-//generate deck of cards 6 pairs of polygons
+//generate deck of cards 10 pairs of polygons
 function makedeck() {
 	var i;
 	var acard;
@@ -68,14 +73,14 @@ function makedeck() {
 		acard = new Card(cx,cy,cardwidth,cardheight,pica,i);
 		deck.push(acard);
 		picb = new Image();
-		picb.src = pairs[i][1];		
+		picb.src = pairs[i][1];
 		bcard = new Card(cx,cy+cardheight+margin,cardwidth,cardheight,picb,i);
 		deck.push(bcard);
 		cx = cx+cardwidth+ margin;
 		acard.draw();
 		bcard.draw();
 	}
-	
+
 }
 
 function shuffle() {
@@ -102,7 +107,7 @@ var nt;
 
 function drawback() {
 	ctx.fillStyle = backcolor;
-	ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);	
+	ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);
 }
 
 
@@ -133,31 +138,39 @@ function choose(ev) {
 		if (firstpick) {
 			firstcard = i;
 			firstpick = false;
-			ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight); 
+			ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight);
 		}
 		else {
 			secondcard = i;
-			ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight); 
+			ctx.drawImage(card.img,card.sx,card.sy,card.swidth,card.sheight);
 		  	if (card.info==deck[firstcard].info) {
 				matched = true;
 				count++;
 				ctx.fillStyle= tablecolor;
-				ctx.fillRect(10,340,900,100);
+				ctx.fillRect(10,340,1200,100);
 				ctx.fillStyle=backcolor;
 				ctx.fillText("Number of matches so far: "+String(count),10,360);
 				if (count>= .5*deck.length) {
 					var now = new Date();
 					var nt = Number(now.getTime());
-					var seconds = Math.floor(.5+(nt-starttime)/1000); 
+					var seconds = Math.floor(.5+(nt-starttime)/1000);
 					ctx.fillStyle= tablecolor;
-					ctx.fillRect(0,0,900,400);
+					ctx.fillRect(0,0,1200,400);
 					ctx.fillStyle=backcolor;
 					out = "You finished in "+String(seconds)+ " secs.";
 					ctx.fillText(out,10,100);
-					ctx.fillText("Reload the page to try again.",10,300);
+          // create a button element
+          let btn = document.createElement('button');
+          // Add the button to the end of the body
+          document.body.appendChild(btn);
+          // Gives the button text
+          btn.innerText = "Reload";
+          // Listen for click and reload the browser for a new game
+          btn.addEventListener('click',()=> location.reload(true));
+					ctx.fillText("Click the 'Reload' button to try again.",10,300);
 					return;
 				}
-				
+
 			}
 			else {
 				matched = false;
@@ -184,17 +197,17 @@ function flipback() {
 }
 
 function init(){
-   ctx = document.getElementById('canvas').getContext('2d'); 
+   ctx = document.getElementById('canvas').getContext('2d');
    canvas1 = document.getElementById('canvas');
    canvas1.addEventListener('click',choose,false);
    makedeck();
    shuffle();
-   ctx.font="bold 20pt sans-serif";
+   ctx.font="bold 20pt Helvetica neue";
    ctx.fillText("Click on two cards to make a match.",10,20);
    ctx.fillText("Number of matches so far: 0",10,360);
    starttime = new Date();
    starttime = Number(starttime.getTime());
-  } 
+  }
 
 
 
@@ -202,11 +215,12 @@ function init(){
 
 </script>
 </head>
-<body onLoad="init();">  
-<canvas id="canvas" width="900" height="400">
+<body onLoad="init();">
+<canvas id="canvas" width="1200" height="400">
 Your browser doesn't support the HTML5 element canvas.
-</canvas>  
+</canvas>
 <br/>
+<p style="font-family:Sans Serif;">Try to match the images by clicking on the cards. To pair images look for similar types of pictures(i.e. two animals or two landscapes)</p>
 
 
 </body>
