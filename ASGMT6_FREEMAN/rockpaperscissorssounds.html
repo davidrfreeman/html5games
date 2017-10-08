@@ -19,7 +19,8 @@
 	var cheight = 400;
 	var ctx;
 	var everything = [];
-    var rockbx = 50;
+  var y = 300;
+  var rockbx = 50;
 	var rockby = 300;
 	var paperbx = 150;
 	var paperby = 300;
@@ -29,28 +30,28 @@
 	var newscore;
 	var size = 15;
 	var result;
-	var choices = ["rock.jpg","paper.gif","scissors.jpg"];
+	var choices = ["monkey.jpg","robot.jpg","pirate.jpg","ninja.jpg","zombie.jpgt"];
 	var compimg = new Image();
 	var beats = [
-		  ["TIE: you both threw rock.","You win: paper covers rock.","You lose: rock crushes scissors."],
-		  ["You lose: paper covers rock.","TIE: you both threw paper.","You win: scissors cuts paper."],
-		  ["You win: rock crushes scissors.","You lose: scissors cuts paper.","TIE: you both threw scissors."]];
+		  ["TIE: You both chose monkey.","You Lose: Monkey unpluggs Robot.","You Win: Pirate skewers Monkey.", "You Lose: Monkey fools Ninja.", "You Win: Zombie savages Monkey."],
+		  ["You Win: Monkey unpluggs Robot.","TIE: You both chose Robot.","You Win: Pirate drowns Robot.", "You Lose: Robot chokes Nina.", "You Lose: Robot crushes Zombie."],
+		  ["You Lose: Pirate drowns Robot.","You Lose: Pirate skewers Monkey.","TIE: You both chose Pirate.", "You Win: Ninja Karate chops Pirate.", "You Win: Zombie eats Pirate."],
+      ["You Win: Monkey fools Ninja.", "You Win: Robot chokes Nina.", "You Lose: Ninja Karate chops Pirate.", "Tie: You both chose Ninja.", "You Lose: Ninja decapitates Zombie."],
+      ["You Lose: Zombie savages Monkey.", "You Win: Robot crushes Zombie.", "You Lose: Zombie eats Pirate.", "You Win: Ninja decapitates Zombie.", "Tie: You both chose Zombie."]
+    ];
 	var points = [
       // monkey
-      [0,1,-1,1,-1],
+      [0,-1,1,-1,1],
       // robot
-      [-1,0,-1,1,1],
+      [1,0,1,-1,-1],
       // pirate
-      [1,1,0,-1,-1],
+      [-1,-1,0,1,1],
       // ninja
-      [-1,-1,1,0,1],
+      [1,1,-1,0,-1],
       // zombie
-      [1,-1,1,-1,0]
+      [-1,1,-1,1,0]
     ]
-	var music = [
-		  [3,1,0],
-		  [1,3,2],
-		  [0,2,3]];
+
 	var musicelements;
 	var musicch;
 
@@ -79,7 +80,7 @@ function drawThrow() {
 }
 
 function choose(ev) {
-	var compch = Math.floor(Math.random()*3);
+	var compch = Math.floor(Math.random()*5);
 	var compchn = choices[compch];
 	compimg.src = compchn;
 	var mx;
@@ -99,11 +100,11 @@ function choose(ev) {
 			size = 15;
 			tid = setInterval(flyin,100);
 			result = beats[compch][i];
-			musicch = music[compch][i];
+			musicch = points[compch][i] + 1;
 			newscore = Number(document.f.score.value);
 			newscore +=points[compch][i];
 			localStorage.setItem("Score",newscore);
-      console.log(localStorage)
+      console.log(localStorage);
 			break;
 		}
 	}
@@ -116,24 +117,28 @@ function flyin() {
 		clearInterval(tid);
 		ctx.fillText(result,200,100,250);
 		document.f.score.value = localStorage.getItem("Score");
-	    musicelements[musicch].play();
+	  musicelements[musicch].play();
 	}
 
 }
 
-var rockb = new Throw(rockbx,rockby,8,50,50,"rgb(250,0,0)","rock.jpg");
-var paperb = new Throw(paperbx,paperby,8,50,50,"rgb(0,200,200)","paper.gif");
-var scib = new Throw(scissorsbx,scissorsby,8,50,50,"rgb(0,0,200)","scissors.jpg");
-everything.push(rockb);
-everything.push(paperb);
-everything.push(scib);
+var monkey = new Throw(50,y,8,50,50,"rgb(250,0,0)","monkey.jpg");
+var robot = new Throw(150,y,8,50,50,"rgb(0,200,200)","robot.jpg");
+var pirate = new Throw(250,y,8,50,50,"rgb(0,0,200)","pirate.jpg");
+var ninja = new Throw(350,y,8,50,50,"rgb(199, 210, 67)","ninja.jpg");
+var zombie = new Throw(450,y,8,50,50,"rgb(215, 101, 197)","zombie.jpg");
+everything.push(monkey);
+everything.push(robot);
+everything.push(pirate);
+everything.push(ninja);
+everything.push(zombie);
 
 
 function init(){
 	document.f.score.value = 0;
-   ctx = document.getElementById('canvas').getContext('2d');
-   canvas1 = document.getElementById('canvas');
-   canvas1.addEventListener('click',choose,false);
+  ctx = document.getElementById('canvas').getContext('2d');
+  canvas1 = document.getElementById('canvas');
+  canvas1.addEventListener('click',choose,false);
   drawall();
   ctx.font="bold 16pt Georgia";
   ctx.fillStyle = "blue";
@@ -145,35 +150,35 @@ function drawall() {
 	var i;
 	for (i=0;i<everything.length;i++) {
 		  everything[i].draw();
-			}
+		  }
 }
 
 
 </script>
 </head>
 <body onLoad="init();">
-<canvas id="canvas" width="600" height="400">
+<canvas id="canvas" width="1000" height="400">
 Your browser doesn't support the HTML5 element canvas.
 </canvas>
 <br/>
 <form name="f">
 Score: <input name="score" value="0" size="3"/>
 </form>
-<audio autobuffer>
-<source src="hithard.ogg" />
-<source src="hithard.mp3" />
-</audio>
-<audio autobuffer>
-<source src="inhale.ogg" />
-<source src="inhale.mp3" />
-</audio>
-<audio autobuffer>
-<source src="sword.ogg" />
-<source src="sword.mp3" />
-</audio>
+
 <audio autobuffer>
 <source src="crowdohh.ogg" />
 <source src="crowdohh.mp3" />
 </audio>
+
+<audio autobuffer>
+<source src="inhale.ogg" />
+<source src="inhale.mp3" />
+</audio>
+
+<audio autobuffer>
+<source src="hithard.ogg" />
+<source src="hithard.mp3" />
+</audio>
+
 </body>
 </html>
