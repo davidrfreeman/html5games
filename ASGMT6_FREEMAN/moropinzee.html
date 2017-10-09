@@ -30,7 +30,7 @@
 	var newscore;
 	var size = 15;
 	var result;
-	var choices = ["monkey.jpg","robot.jpg","pirate.jpg","ninja.jpg","zombie.jpgt"];
+	var choices = ["monkey.jpg","robot.jpg","pirate.jpg","ninja.jpg","zombie.jpg"];
 	var compimg = new Image();
 	var beats = [
 		  ["TIE: You both chose monkey.","You Lose: Monkey unpluggs Robot.","You Win: Pirate skewers Monkey.", "You Lose: Monkey fools Ninja.", "You Win: Zombie savages Monkey."],
@@ -98,28 +98,20 @@ function choose(ev) {
 		if ((mx>ch.sx)&&(mx<ch.sx+ch.bwidth)&&(my>ch.sy)&&(my<ch.sy+ch.bheight)) {
 			drawall();
 			size = 15;
-			tid = setInterval(flyin,100);
+
 			result = beats[compch][i];
 			musicch = points[compch][i] + 1;
 			newscore = Number(document.f.score.value);
 			newscore +=points[compch][i];
 			localStorage.setItem("Score",newscore);
       console.log(localStorage);
+      ctx.drawImage(compimg, 100,70,50,50)
+      ctx.fillText(result,200,100,250);
+      document.f.score.value = localStorage.getItem("Score");
+      musicelements[musicch].play();
 			break;
 		}
 	}
-}
-function flyin() {
-
-	ctx.drawImage(compimg, 70,100,size,size);
-	size +=5;
-	if (size>50) {
-		clearInterval(tid);
-		ctx.fillText(result,200,100,250);
-		document.f.score.value = localStorage.getItem("Score");
-	  musicelements[musicch].play();
-	}
-
 }
 
 var monkey = new Throw(50,y,8,50,50,"rgb(250,0,0)","monkey.jpg");
@@ -140,7 +132,7 @@ function init(){
   canvas1 = document.getElementById('canvas');
   canvas1.addEventListener('click',choose,false);
   drawall();
-  ctx.font="bold 16pt Georgia";
+  ctx.font="bold 20pt Courier New";
   ctx.fillStyle = "blue";
   musicelements = document.getElementsByTagName("audio");
 }
@@ -166,18 +158,23 @@ Score: <input name="score" value="0" size="3"/>
 </form>
 
 <audio autobuffer>
-<source src="crowdohh.ogg" />
-<source src="crowdohh.mp3" />
+  <source src="monkey.wav" />
 </audio>
 
 <audio autobuffer>
-<source src="inhale.ogg" />
-<source src="inhale.mp3" />
+  <source src="robot.wav" />
 </audio>
 
 <audio autobuffer>
-<source src="hithard.ogg" />
-<source src="hithard.mp3" />
+  <source src="sword.flac" />
+</audio>
+
+<audio autobuffer>
+  <source src="ninja.wav" />
+</audio>
+
+<audio>
+  <source src="zombie.wav" />
 </audio>
 
 </body>
