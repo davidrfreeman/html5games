@@ -50,6 +50,14 @@
       [1,1,-1,0,-1],
       // zombie
       [-1,1,-1,1,0]
+    ];
+
+    var sounds = [
+      [5,0,2,0,4],
+      [0,5,2,1,1],
+      [2,2,5,3,4],
+      [0,1,3,5,3],
+      [4,1,4,3,5]
     ]
 
 	var musicelements;
@@ -100,7 +108,7 @@ function choose(ev) {
 			size = 15;
 
 			result = beats[compch][i];
-			musicch = points[compch][i] + 1;
+			musicch = sounds[compch][i];
 			newscore = Number(document.f.score.value);
 			newscore +=points[compch][i];
 			localStorage.setItem("Score",newscore);
@@ -114,9 +122,9 @@ function choose(ev) {
 	}
 }
 
-var monkey = new Throw(50,y,8,50,50,"rgb(250,0,0)","monkey.jpg");
-var robot = new Throw(150,y,8,50,50,"rgb(0,200,200)","robot.jpg");
-var pirate = new Throw(250,y,8,50,50,"rgb(0,0,200)","pirate.jpg");
+var monkey = new Throw(50,y,8,50,50,"rgb(227, 121, 24)","monkey.jpg");
+var robot = new Throw(150,y,8,50,50,"rgb(40, 148, 182)","robot.jpg");
+var pirate = new Throw(250,y,8,50,50,"rgb(55, 199, 99)","pirate.jpg");
 var ninja = new Throw(350,y,8,50,50,"rgb(199, 210, 67)","ninja.jpg");
 var zombie = new Throw(450,y,8,50,50,"rgb(215, 101, 197)","zombie.jpg");
 everything.push(monkey);
@@ -156,6 +164,37 @@ Your browser doesn't support the HTML5 element canvas.
 <form name="f">
 Score: <input name="score" value="0" size="3"/>
 </form>
+<br>
+<div>
+  <p>
+    Moropinzee (Monkey Robot Pirate Ninja Zombie) Rules: <br><br>
+    <strong>Monkey</strong><br>
+
+    Monkey fools Ninja <br>
+    Monkey unplugs Robot
+    <br>
+
+    <strong>Robot</strong><br>
+    Robot chokes Ninja <br>
+    Robot crushes Zombie
+    <br>
+
+    <strong>Pirate</strong><br>
+    Pirate drowns Robot <br>
+    Pirate skewers Monkey
+    <br>
+
+    <strong>Ninja</strong><br>
+    Ninja karate chops Pirate <br>
+    Ninja decapitates Zombie
+    <br>
+
+    <strong>Zombie</strong><br>
+    Zombie eats Pirate <br>
+    Zombie savages Monkey
+    <br>
+  </p>
+</div>
 
 <audio autobuffer>
   <source src="monkey.wav" />
@@ -175,6 +214,11 @@ Score: <input name="score" value="0" size="3"/>
 
 <audio>
   <source src="zombie.wav" />
+</audio>
+
+<audio>
+  <source src="crowdohh.mp3" />
+  <source src="crowdohh.ogg" />
 </audio>
 
 </body>
