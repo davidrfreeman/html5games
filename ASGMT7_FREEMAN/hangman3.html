@@ -8,15 +8,14 @@
 }
 </style>
 <script src="words1.js" defer></script>
-    <script type="text/javascript">
+	<script type="text/javascript">
 
-  var ctx;
+	var ctx;
 	var thingelem;
 	var alphabet = "abcdefghijklmnopqrstuvwxyz";
-  var alphabety = 300;
+	var alphabety = 300;
 	var alphabetx = 20;
 	var alphabetwidth = 25;
-	var secret;
 	var lettersguessed = 0;
 	var secretx = 160;
 	var secrety = 50;
@@ -37,6 +36,8 @@
 		drawnoose
 		];
 	var cur = 0;
+	let selectedChoice,
+		secret
 function drawgallows() {
 	ctx.lineWidth = 8;
 	ctx.strokeStyle = gallowscolor;
@@ -135,9 +136,16 @@ function drawneck() {
 
 }
 function init(){
-	 ctx = document.getElementById('canvas').getContext('2d');
-   setupgame();
-   ctx.font="bold 20pt Ariel";
+	ctx = document.getElementById('canvas').getContext('2d');
+	
+	ctx.font="bold 20pt Ariel";
+	let dropdown = document.querySelector("#dropdown")
+	steps[0]();
+	dropdown.addEventListener('click', () => {
+		selectedChoice = dropdown.value
+		console.log(selectedChoice)
+		setupgame();
+	})
 }
 
 function setupgame() {
@@ -160,8 +168,11 @@ function setupgame() {
 		thingelem.style.left = String(x)+"px";
 		thingelem.addEventListener('click',pickelement,false);
 	}
-	var ch = Math.floor(Math.random()* words.length);
-	secret = words[ch];
+	
+	// var ch = Math.floor(Math.random()* words.length);
+	// secret = words[ch];
+	secret = randomWord(selectedChoice)
+	console.log(secret)
 	for (i=0;i<secret.length;i++) {
 		uniqueid = "s"+String(i);
 		d = document.createElement('secret');
@@ -175,7 +186,7 @@ function setupgame() {
 		thingelem.style.left = String(x)+"px";
 
 	}
-	steps[cur]();
+	
 	cur++;
 	return false;
 }
@@ -236,6 +247,7 @@ function setupgame() {
  }
 
 
+
 </script>
 </head>
 <body onLoad="init();">
@@ -248,5 +260,13 @@ Your browser doesn't support the HTML5 element canvas.
 </canvas>
 <br/>
 </p>
+Choose your category <br>
+<select name="Choices" id="dropdown">
+	<option value="Animals">Animals</option>
+	<option value="Cities">Cities</option>
+</select>
+
 </body>
+
+<script src="words1.js"></script>
 </html>

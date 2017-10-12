@@ -4,17 +4,16 @@ var words = [
 
 let categories = {
 	"Animals": [
-		"Dog","Horse","Lion","Whale","Rattle Snake","Kangaroo","Clown Fish","Moose"
+		"dog","horse","lion","whale","cheetah","kangaroo","salmon","moose","eagle","hawk","lobster"
 	],
 	"Cities": [
-		"Denver","Las Angeles","New York","Phoenix","Houston","Cleveland","Washington D.C.","Chicago","Minneapolis","Boston"
+		"denver","sacramento","albany","phoenix","houston","cleveland","portland","chicago","minneapolis","boston"
 	]
 }
 
-let choice = "Animals"
-
-let randomWord = () => {
+let randomWord = choice => {
 	let length = categories[choice].length
 	let i = Math.floor(Math.random()*length)
 	return categories[choice][i]
 }
+
