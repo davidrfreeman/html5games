@@ -141,11 +141,15 @@ function init(){
 	ctx.font="bold 20pt Ariel";
 	let dropdown = document.querySelector("#dropdown")
 	steps[0]();
-	dropdown.addEventListener('click', () => {
+	function dropdownSelection() {
 		selectedChoice = dropdown.value
 		console.log(selectedChoice)
 		setupgame();
-	})
+		document.body.style.backgroundImage = "url('./"+selectedChoice+".jpg')"
+		dropdown.removeEventListener('click',dropdownSelection)
+	}
+	dropdown.addEventListener('click', dropdownSelection)
+	
 }
 
 function setupgame() {
@@ -264,7 +268,7 @@ Choose your category <br>
 <select name="Choices" id="dropdown">
 	<option selected disabled hidden style='display: none' value=""></option>
 	<option value="Animals">Animals</option>
-	<option value="Cities">Cities</option>
+	<option value="US Cities">US Cities</option>
 	<option value="Astronomy">Astronomy</option>
 	<option value="Sports">Sports</option>
 </select>

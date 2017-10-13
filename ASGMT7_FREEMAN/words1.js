@@ -1,7 +1,3 @@
-var words = [
-	 "muon", "blight","kerfuffle","qat"
-];
-
 let categories = {
 	"Animals": [
 		"dog","horse","lion","whale","cheetah","kangaroo","salmon","moose","eagle","lobster"
@@ -24,4 +20,11 @@ let randomWord = choice => {
 	let ln = categories[choice].length
 	let i = Math.floor(Math.random()*ln)
 	return categories[choice][i]
+}
+
+let backgrounds = {
+	"Animals": 'Animals.jpg',
+	"Astonomy": 'Astronomy.jpg',
+	"Sports": 'Sports.jpg',
+	"US Cities": 'US Cities.jpg'
 }
