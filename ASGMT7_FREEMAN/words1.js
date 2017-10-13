@@ -4,11 +4,18 @@ var words = [
 
 let categories = {
 	"Animals": [
-		"dog","horse","lion","whale","cheetah","kangaroo","salmon","moose","eagle","hawk","lobster"
+		"dog","horse","lion","whale","cheetah","kangaroo","salmon","moose","eagle","lobster"
 	],
-	"Cities": [
+	"US Cities": [
 		"denver","sacramento","albany","phoenix","houston","cleveland","portland","chicago","minneapolis","boston"
-	]
+	],
+	"Coutries": [
+		"argentina","brazil","colombia","greece","india","luxembourg","mexico","nepal","qatar","uganda"
+	],
+	"Celestial Bodies": [
+		"sun","mercury","venus","earth","mars","asteroid","jupiter","saturn","uranus","neptune"
+	],
+	""
 }
 
 let randomWord = choice => {
