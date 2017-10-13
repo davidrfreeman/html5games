@@ -12,10 +12,12 @@ let categories = {
 	"Coutries": [
 		"argentina","brazil","colombia","greece","india","luxembourg","mexico","nepal","qatar","uganda"
 	],
-	"Celestial Bodies": [
+	"Astronomy": [
 		"sun","mercury","venus","earth","mars","asteroid","jupiter","saturn","uranus","neptune"
 	],
-	""
+	"Sports": [
+		"baseball","football","cricket","soccer","hockey","basketball","volleyball","lacrosse","tennis","golf"
+	]
 }
 
 let randomWord = choice => {
