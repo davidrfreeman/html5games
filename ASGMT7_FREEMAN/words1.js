@@ -12,8 +12,7 @@ let categories = {
 }
 
 let randomWord = choice => {
-	let length = categories[choice].length
-	let i = Math.floor(Math.random()*length)
+	let ln = categories[choice].length
+	let i = Math.floor(Math.random()*ln)
 	return categories[choice][i]
 }
-
