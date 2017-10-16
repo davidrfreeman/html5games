@@ -6,17 +6,18 @@
 }
 .blanks {position:absolute;left: 0px; top: 0px; border:none; margin: 5px; padding: 5px; color:#006; background-color:white; font-family:"Courier New", Courier, monospace; text-decoration:underline; color: black; font-size:24px;
 }
+
 body, html {
 	height: 100%;
 	width: 100%;
-	margin: 0;
-	padding: 0;
 }
+
 body {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
 </style>
 <script src="words1.js" defer></script>
 	<script type="text/javascript">
@@ -184,8 +185,7 @@ function setupgame() {
 		thingelem.addEventListener('click',pickelement,false);
 	}
 	
-	// var ch = Math.floor(Math.random()* words.length);
-	// secret = words[ch];
+	
 	secret = randomWord(selectedChoice)
 	console.log(secret)
 	for (i=0;i<secret.length;i++) {
@@ -207,8 +207,8 @@ function setupgame() {
 }
 
  function pickelement(ev) {
-	 var not = true;
-	 var picked = this.textContent;
+	var not = true;
+	var picked = this.textContent;
 	var i;
 	var j;
 	var uniqueid;
@@ -283,6 +283,9 @@ Choose your category <br>
 	<option value="Astronomy">Astronomy</option>
 	<option value="Sports">Sports</option>
 </select>
+<br><br>
+
+<a href="http://www.freepik.com/free-photos-vectors/background" target="_blank">Background vectors created by Freepik</a>
 
 </body>
 
